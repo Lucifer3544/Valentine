@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💘</title>
+
+<style>
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: white;
+  padding: 30px;
+  border-radius: 20px;
+  text-align: center;
+  width: 90%;
+  max-width: 320px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+  box-sizing: border-box;
+  transition: all 1s ease;
+  z-index: 5;
+}
+
+.blur-start {
+  filter: blur(15px);
+  transform: scale(1.08);
+  opacity: 0.6;
+}
+
+.fade-out {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.fade-in {
+  opacity: 0;
+  transform: scale(0.95);
+  animation: smoothIn 0.6s ease forwards;
+}
+
+@keyframes smoothIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+
+.hidden {
+  display: none !important;
+}
+
+h1 { color: #ff4d6d; font-size: 22px; }
+p { font-size: 14px; }
+
+button {
+  padding: 12px 24px;
+  font-size: 16px;
+  border-radius: 25px;
+  border: none;
+  cursor: pointer;
+  margin: 10px;
+}
+
+#yes { background: #ff4d6d; color: white; }
+#no { background: #ddd; position: relative; }
+
+/* ===== BALLOONS ===== */
+.balloon {
+  position: absolute;
+  font-size: 50px;
+  cursor: pointer;
+  animation: float 3s ease-in-out infinite;
+  transition: transform 0.2s ease;
+}
+
+.balloon:hover {
+  transform: scale(1.1);
+}
+
+.balloon.popped {
+  animation: none;
+  transform: scale(0.7);
+  opacity: 0.6;
+  cursor: default;
+}
+
+@keyframes float {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0px); }
+}
+
+/* ===== SPARKLES ===== */
+.sparkle {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: gold;
+  border-radius: 50%;
+  animation: sparkleAnim 0.8s ease-out forwards;
+}
+
+@keyframes sparkleAnim {
+  from {
+    opacity: 1;
+    transform: scale(1) translate(0,0);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.5) translate(var(--x), var(--y));
+  }
+}
+
+/* ===== PHOTO POPUP ===== */
+.photo-popup {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0,0,0,0.6);
+  animation: fadeIn 0.4s ease forwards;
+  z-index: 10;
+}
+
+.photo-popup img {
+  width: 80%;
+  max-width: 320px;
+  border-radius: 20px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+  animation: popIn 0.5s ease forwards;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.7); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ===== HEART RAIN ===== */
+.heart {
+  position: fixed;
+  top: -20px;
+  font-size: 20px;
+  animation: fall linear forwards;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(110vh);
+    opacity: 0;
+  }
+}
+
+.final-message {
+  margin-top: 15px;
+  color: #ff4d6d;
+  font-weight: bold;
+  animation: fadeIn 1s ease forwards;
+}
+</style>
+</head>
+
+<body>
+
+<!-- INTRO -->
+<div class="card blur-start" id="introCard">
+  <h1>Hi My Love 💕</h1>
+  <p>I made something special just for you… 😌</p>
+  <button id="continueBtn">Continue 💘</button>
+</div>
+
+<!-- QUESTION -->
+<div class="card blur-start hidden" id="questionCard">
+  <h1>Will you be my Valentine? 💘</h1>
+  <p>(There is only one correct answer 😌)</p>
+  <button id="yes">YES ❤️</button>
+  <button id="no">NO 😏</button>
+</div>
+
+<!-- YES CARD -->
+<div class="card hidden" id="yesCard">
+  <h1>YAYYYY!! 🎉💖</h1>
+  <p id="time"></p>
+  <p id="balloonInstruction">Pop the balloons to unlock our memories 🎈</p>
+
+  <div id="finalMessage"></div>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="Little Things X Ek Din Aap by Alka Yagnik and Kumar Sanu - Yes Boss.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+
+/* ===== INTRO FOCUS ===== */
+const introCard = document.getElementById("introCard");
+window.onload = () => {
+  setTimeout(() => introCard.classList.remove("blur-start"), 200);
+};
+
+const questionCard = document.getElementById("questionCard");
+const continueBtn = document.getElementById("continueBtn");
+
+continueBtn.onclick = () => {
+  introCard.classList.add("fade-out");
+  setTimeout(() => {
+    introCard.classList.add("hidden");
+    questionCard.classList.remove("hidden");
+    setTimeout(() => questionCard.classList.remove("blur-start"), 100);
+  }, 600);
+};
+
+/* ===== NO BUTTON MOVE ===== */
+const noBtn = document.getElementById("no");
+const noMessages = ["Wait 😳","Hold on 🤨","Are you sure? 😅","Nice try 😌"];
+let msgIndex = 0;
+
+noBtn.addEventListener("mouseenter", moveNo);
+noBtn.addEventListener("click", moveNo);
+
+function moveNo() {
+  const x = Math.random() * 200 - 100;
+  const y = Math.random() * 100 - 50;
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+  noBtn.textContent = noMessages[msgIndex];
+  msgIndex = (msgIndex + 1) % noMessages.length;
+}
+
+/* ===== YES CLICK ===== */
+const yesBtn = document.getElementById("yes");
+const yesCard = document.getElementById("yesCard");
+const timeText = document.getElementById("time");
+const bgMusic = document.getElementById("bgMusic");
+
+yesBtn.onclick = () => {
+
+  bgMusic.volume = 0.5;
+  bgMusic.play();
+
+  // Smooth fade out question card
+  questionCard.classList.add("fade-out");
+
+  setTimeout(() => {
+
+    questionCard.classList.add("hidden");
+
+    yesCard.classList.remove("hidden");
+    yesCard.classList.add("fade-in");
+
+    const now = new Date();
+    timeText.textContent =
+      "You said YES at " +
+      now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+
+    launchBalloons();
+    startHeartRain();
+
+  }, 500);
+};
+
+
+/* ===== BALLOON MEMORY SYSTEM ===== */
+
+const photos = [
+  "photo1.jpg",
+  "photo2.jpg",
+  "photo3.jpg",
+  "photo4.jpg"
+];
+
+let poppedCount = 0;
+
+function launchBalloons() {
+
+  const positions = [
+    {top:"10%", left:"10%"},
+    {top:"15%", right:"10%"},
+    {bottom:"15%", left:"15%"},
+    {bottom:"10%", right:"15%"}
+  ];
+
+  photos.forEach((photo, index) => {
+
+    const balloon = document.createElement("div");
+    balloon.className = "balloon";
+    balloon.textContent = "🎈";
+
+    Object.assign(balloon.style, positions[index]);
+
+    balloon.onclick = (e) => popBalloon(balloon, photo, e);
+
+    document.body.appendChild(balloon);
+  });
+}
+
+function popBalloon(balloon, photo, event) {
+
+  if (balloon.classList.contains("popped")) return;
+
+  createSparkles(event.clientX, event.clientY);
+
+  balloon.textContent = "💥";
+  balloon.classList.add("popped");
+
+  const popup = document.createElement("div");
+  popup.className = "photo-popup";
+  popup.innerHTML = `<img src="${photo}" />`;
+  popup.onclick = () => popup.remove();
+  document.body.appendChild(popup);
+
+  poppedCount++;
+
+  if (poppedCount === photos.length) {
+
+  // Remove instruction text
+  document.getElementById("balloonInstruction").style.display = "none";
+
+  document.getElementById("finalMessage").innerHTML =
+    "<div class='final-message'>And this is just the beginning of our forever ❤️</div>";
+}
+
+}
+
+function createSparkles(x, y) {
+  for(let i=0;i<15;i++){
+    const sparkle = document.createElement("div");
+    sparkle.className = "sparkle";
+
+    sparkle.style.left = x + "px";
+    sparkle.style.top = y + "px";
+
+    sparkle.style.setProperty("--x", (Math.random()*100 - 50) + "px");
+    sparkle.style.setProperty("--y", (Math.random()*100 - 50) + "px");
+
+    document.body.appendChild(sparkle);
+
+    setTimeout(() => sparkle.remove(), 800);
+  }
+}
+
+/* ===== HEART RAIN ===== */
+function startHeartRain() {
+  setInterval(() => {
+    const heart = document.createElement("div");
+    heart.className = "heart";
+    heart.textContent = "💖";
+
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.animationDuration = (4 + Math.random() * 3) + "s";
+
+    document.body.appendChild(heart);
+
+    setTimeout(() => heart.remove(), 7000);
+  }, 500);
+}
+
+</script>
+
+</body>
+</html>

@@ -182,14 +182,18 @@ button {
 
 <!-- INTRO -->
 <div class="card blur-start" id="introCard">
-  <h1>Hi My Love 💕</h1>
-  <p>I made something special just for you… 😌</p>
+  <h1>Hii Divyaaaaaa 💕</h1>
+  <p>I know this may sound like chupadi chupadi baatein, but nothing can stop me from saying this today..😁 <br> Falling in love with you was not planned but it turned out to be
+  the most beutiful thing in my life. I never thought I could feel so comfortable with someone.
+  You always ask me, will I get bored of you? But Darlinggg, you know how Irani cafe sandwich makes our heart go wow everytime, Just like that I am falling in love with you over and over again.
+<br>I love you more than my mind can decide and I want to stay with you forever. I am here with intention of marrying you one day!</p>
+  <p>So here is something that I want to ask… 😌</p>
   <button id="continueBtn">Continue 💘</button>
 </div>
 
 <!-- QUESTION -->
 <div class="card blur-start hidden" id="questionCard">
-  <h1>Will you be my Valentine? 💘</h1>
+  <h1>Divya Chandwani, Will you be my Valentine? 💘</h1>
   <p>(There is only one correct answer 😌)</p>
   <button id="yes">YES ❤️</button>
   <button id="no">NO 😏</button>
@@ -198,6 +202,7 @@ button {
 <!-- YES CARD -->
 <div class="card hidden" id="yesCard">
   <h1>YAYYYY!! 🎉💖</h1>
+  <p>Thank you for choosing me😁 <br>Being with you always makes me feel like I am luckiest person in the universe...🤗</p>
   <p id="time"></p>
   <p id="balloonInstruction">Pop the balloons to unlock our memories 🎈</p>
 
@@ -205,7 +210,7 @@ button {
 </div>
 
 <audio id="bgMusic" loop>
-  <source src="Little Things X Ek Din Aap by Alka Yagnik and Kumar Sanu - Yes Boss.mp3" type="audio/mpeg">
+  <source src="media/Little Things X Ek Din Aap by Alka Yagnik and Kumar Sanu - Yes Boss.mp3" type="audio/mpeg">
 </audio>
 
 <script>
@@ -230,7 +235,7 @@ continueBtn.onclick = () => {
 
 /* ===== NO BUTTON MOVE ===== */
 const noBtn = document.getElementById("no");
-const noMessages = ["Wait 😳","Hold on 🤨","Are you sure? 😅","Nice try 😌"];
+const noMessages = ["Galti se click hua na 😅","Galat button motoo 😳","Divyaaa Darlingg ye nhi 😒","Motooo natak mt kr🤨"];
 let msgIndex = 0;
 
 noBtn.addEventListener("mouseenter", moveNo);
@@ -265,10 +270,10 @@ yesBtn.onclick = () => {
     yesCard.classList.remove("hidden");
     yesCard.classList.add("fade-in");
 
-    const now = new Date();
-    timeText.textContent =
-      "You said YES at " +
-      now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    // const now = new Date();
+    // timeText.textContent =
+    //   "You said YES at " +
+    //   now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
     launchBalloons();
     startHeartRain();
@@ -280,10 +285,10 @@ yesBtn.onclick = () => {
 /* ===== BALLOON MEMORY SYSTEM ===== */
 
 const photos = [
-  "photo1.jpg",
-  "photo2.jpg",
-  "photo3.jpg",
-  "photo4.jpg"
+  "media/photo4.webp",
+  "media/photo2.jpg",
+  "media/photo3.jpg",
+  "media/photo1.jpg"
 ];
 
 let poppedCount = 0;

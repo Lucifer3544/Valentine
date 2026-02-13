@@ -71,9 +71,31 @@ button {
   cursor: pointer;
   margin: 10px;
 }
+#continueBtn {
+  background: #ff4d6d;
+  color: white;
+}
 
-#yes { background: #ff4d6d; color: white; }
-#no { background: #ddd; position: relative; }
+#continueBtn:hover {
+  background: #e63e5c;
+  transform: scale(1.05);
+}
+/* YES button (lighter romantic pink) */
+#yes {
+  background: #ff4d6d;
+  color: white;
+}
+
+#yes:hover {
+  background: #e63e5c;
+  transform: scale(1.05);
+}
+
+/* NO button unchanged */
+#no {
+  background: #ddd;
+  position: relative;
+}
 
 /* ===== BALLOONS ===== */
 .balloon {
@@ -188,7 +210,7 @@ button {
   You always ask me, will I get bored of you? But Darlinggg, you know how Irani cafe sandwich makes our heart go wow everytime, Just like that I am falling in love with you over and over again.
 <br>I love you more than my mind can decide and I want to stay with you forever. I am here with intention of marrying you one day!</p>
   <p>So here is something that I want to ask… 😌</p>
-  <button id="continueBtn">Continue 💘</button>
+  <button id="continueBtn">Continue 💌</button>
 </div>
 
 <!-- QUESTION -->
@@ -276,10 +298,18 @@ yesBtn.onclick = () => {
     //   now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 
     launchBalloons();
+    preloadImages(photos);
     startHeartRain();
 
   }, 500);
 };
+
+function preloadImages(imageArray) {
+  imageArray.forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+}
 
 
 /* ===== BALLOON MEMORY SYSTEM ===== */
